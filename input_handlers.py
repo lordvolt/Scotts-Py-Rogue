@@ -587,15 +587,15 @@ class GameOverEventHandler(EventHandler):
 
         # ASCII Tombstone (centered, gray stone look)
         tomb_lines = [
-            "   ___________ ",
-            "  /           |",
-            " /    REST    |",
-            "|      IN     |",
-            "|    PIECES   |",
-            "|             |",
-            "|             |",
-            "|_____________|",
-            "\\|/       \\|/",
+            "      ___________ ",
+            "     /           |",
+            "    /    REST    |",
+            "   |      IN     |",
+            "   |    PIECES   |",
+            "   |             |",
+            "   |             |",
+            "   |_____________|",
+            "\\|/               \\|/",
         ]
         for i, line in enumerate(tomb_lines):
             console.print(

@@ -117,22 +117,41 @@ item_potion_health_greater = Item(
     consumable=consumable.HealingConsumable(diceroll="1d10+6"),    
 )
 
+"""
 lightning_scroll = Item(
-    char="~",
+    char="≈",
     color=(255, 255, 0), 
     name="Lightning Scroll",
-    consumable=consumable.LightningDamageConsumable(damage=20, maximum_range=5),
+    longname="Lightning Scroll (5Rng)",
+    consumable=consumable.LightningDamageConsumable(dmg_diceroll="3d6+6", maximum_range=5),
+)
+"""
+
+item_scroll_lighting_v2 = Item(
+    char="≈",
+    color=(255, 255, 0), 
+    name="Lightning Scroll v2",
+    longname="Lightning Scroll v2 (5Rng)",
+    consumable=consumable.AutoProjectileDamageConsumable(dmg_diceroll="3d6+6", maximum_range=5, projectiletext="Lightning Bolt"),
+)
+
+item_scroll_magicmissle = Item(
+    char="≈",
+    color=(255, 102, 204),
+    name="Magic Missle",
+    longname="Magic Missle (Tgt)",
+    consumable=consumable.TargetedProjectileDamageConsumable(dmg_diceroll="2d6", maximum_range=5, projectiletext="Magic Missle"),
 )
 
 confusion_scroll = Item(
-    char="~",
+    char="≈",
     color=(207, 63, 255),
     name="Confusion Scroll",
     consumable=consumable.ConfusionConsumable(number_of_turns=10),
 )
 
 fireball_scroll = Item(
-    char="~",
+    char="≈",
     color=(255, 0, 0),
     name="Fireball Scroll",
     consumable=consumable.FireballDamageConsumable(damage=12, radius=3),

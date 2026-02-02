@@ -149,12 +149,12 @@ class MeleeAction(ActionWithDirection):
 
         if (target.fighter.def_diceroll != ""):
             if (self.entity.fighter.atk_diceroll != ""):
-                damage = dicerolls.Roll(self.entity.fighter.atk_diceroll) - dicerolls.Roll(target.fighter.def_diceroll)
+                damage = (dicerolls.Roll(self.entity.fighter.atk_diceroll)+self.entity.fighter.power_bonus) - (dicerolls.Roll(target.fighter.def_diceroll)+self.entity.fighter.defense_bonus)
             else:
-                damage = self.entity.fighter.power - dicerolls.Roll(target.fighter.def_diceroll)
+                damage = self.entity.fighter.power - (dicerolls.Roll(target.fighter.def_diceroll)+self.entity.fighter.defense_bonus)
         else:
             if (self.entity.fighter.atk_diceroll != ""):
-                damage = dicerolls.Roll(self.entity.fighter.atk_diceroll) - target.fighter.defense
+                damage = (dicerolls.Roll(self.entity.fighter.atk_diceroll)+self.entity.fighter.power_bonus) - target.fighter.defense
             else:
                 damage = self.entity.fighter.power - target.fighter.defense
 
@@ -169,13 +169,15 @@ class MeleeAction(ActionWithDirection):
         else:
             attack_color = color.enemy_atk
 
+
+        ### TODO - Actual dodge logic based upon attackers Dex vs defenders Agility
         if (target.fighter.base_dodge > 0) or (target.fighter.dodge_diceroll != ""):
             if (target.fighter.dodge_diceroll != ""):
-                if (dicerolls.Roll(target.fighter.dodge_diceroll) > dicerolls.Roll("1d6")):
+                if (dicerolls.Roll(target.fighter.dodge_diceroll) > dicerolls.Roll("1d12")):
                     damage = 0
                     dodged = 1
                     attack_desc = f"{attack_desc}, but is dodged."
-            elif (target.fighter.base_dodge > dicerolls.Roll("1d6")):
+            elif (target.fighter.base_dodge > dicerolls.Roll("1d12")):
                 damage = 0
                 dodged = 1
                 attack_desc = f"{attack_desc}, but is dodged."

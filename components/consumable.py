@@ -136,15 +136,21 @@ class FireballDamageConsumable(Consumable):
             raise Impossible("There are no targets in the radius.")
         self.consume()            
 
+### DEPRECATED
 class LightningDamageConsumable(Consumable):
-    def __init__(self, damage: int, maximum_range: int):
+    def __init__(self, damage: int=0, maximum_range: int=1, dmg_diceroll: str=""):
         self.damage = damage
         self.maximum_range = maximum_range
+        self.dmg_diceroll = dmg_diceroll
 
     def activate(self, action: actions.ItemAction) -> None:
         consumer = action.entity
         target = None
         closest_distance = self.maximum_range + 1.0
+
+        if (self.dmg_diceroll != ""):
+            self.damage = dicerolls.Roll(self.dmg_diceroll)
+        
 
         for actor in self.engine.game_map.actors:
             if actor is not consumer and self.parent.gamemap.visible[actor.x, actor.y]:
@@ -162,3 +168,73 @@ class LightningDamageConsumable(Consumable):
             self.consume()
         else:
             raise Impossible("No enemy is close enough to strike.")
+
+class AutoProjectileDamageConsumable(Consumable):
+    def __init__(self, damage: int=0, maximum_range: int=1, dmg_diceroll: str="", projectiletext: str="rock"):
+        self.damage = damage
+        self.maximum_range = maximum_range
+        self.dmg_diceroll = dmg_diceroll
+        self.projectiletext = projectiletext
+
+    def activate(self, action: actions.ItemAction) -> None:
+        consumer = action.entity
+        target = None
+        closest_distance = self.maximum_range + 1.0
+
+        if (self.dmg_diceroll != ""):
+            self.damage = dicerolls.Roll(self.dmg_diceroll)
+        
+
+        for actor in self.engine.game_map.actors:
+            if actor is not consumer and self.parent.gamemap.visible[actor.x, actor.y]:
+                distance = consumer.distance(actor.x, actor.y)
+
+                if distance < closest_distance:
+                    target = actor
+                    closest_distance = distance
+
+        if target:
+            self.engine.message_log.add_message(
+                f"A {self.projectiletext} hits the {target.name}, for {self.damage} damage!"
+            )
+            target.fighter.take_damage(self.damage)
+            self.consume()
+        else:
+            raise Impossible("No enemy is close enough to strike.")
+
+class TargetedProjectileDamageConsumable(Consumable):
+    def __init__(self, damage: int=0, maximum_range: int=1, dmg_diceroll: str="", projectiletext: str="rock"):
+        self.damage = damage
+        self.maximum_range = maximum_range
+        self.dmg_diceroll = dmg_diceroll
+        self.projectiletext = projectiletext
+
+    def get_action(self, consumer: Actor) -> SingleRangedAttackHandler:
+        self.engine.message_log.add_message(
+            "Select a target location.", color.needs_target
+        )
+        return SingleRangedAttackHandler(
+            self.engine,
+            callback=lambda xy: actions.ItemAction(consumer, self.parent, xy),
+        )
+
+    def activate(self, action: actions.ItemAction) -> None:
+        consumer = action.entity
+        target = action.target_actor
+
+        if not self.engine.game_map.visible[action.target_xy]:
+            raise Impossible("You cannot target an area that you cannot see.")
+        if not target:
+            raise Impossible("You must select an enemy to target.")
+        if target is consumer:
+            raise Impossible("You cannot target yourself!")
+
+        if (self.dmg_diceroll != ""):
+            self.damage = dicerolls.Roll(self.dmg_diceroll)
+        
+
+        self.engine.message_log.add_message(
+            f"A {self.projectiletext} hits the {target.name}, for {self.damage} damage!"
+        )
+        target.fighter.take_damage(self.damage)
+        self.consume()
