@@ -13,11 +13,36 @@ if TYPE_CHECKING:
 class Fighter(BaseComponent):
     parent: Actor
 
-    def __init__(self, hp: int, base_defense: int, base_power: int):
+    def __init__(
+        self,
+        hp: int=1,
+        base_str: int=0,
+        base_dex: int=0,
+        base_agi: int=0,
+        base_con: int=0,
+        base_int: int=0,
+        base_chr: int=0,        
+        base_defense: int=0,
+        base_power: int=0,
+        base_dodge: int=0,
+        atk_diceroll: str="",
+        def_diceroll: str="",
+        dodge_diceroll: str="",
+    ):
         self.max_hp = hp
         self._hp = hp
+        self.base_str = base_str
+        self.base_dex = base_dex
+        self.base_agi = base_agi
+        self.base_con = base_con
+        self.base_int = base_int
+        self.base_chr = base_chr
         self.base_defense = base_defense
         self.base_power = base_power
+        self.base_dodge = base_dodge
+        self.atk_diceroll = atk_diceroll
+        self.def_diceroll = def_diceroll
+        self.dodge_diceroll = dodge_diceroll
 
     @property
     def hp(self) -> int:

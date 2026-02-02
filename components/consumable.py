@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import Optional, TYPE_CHECKING
 
+import dicerolls
 import actions
 import color
 import components.ai
@@ -80,12 +81,16 @@ class ConfusionConsumable(Consumable):
         self.consume()
 
 class HealingConsumable(Consumable):
-    def __init__(self, amount: int):
+    def __init__(self, amount: int=0, diceroll: str=""):
         self.amount = amount
+        self.diceroll = diceroll
 
     def activate(self, action: actions.ItemAction) -> None:
         consumer = action.entity
-        amount_recovered = consumer.fighter.heal(self.amount)
+        if self.diceroll != "":
+            amount_recovered = consumer.fighter.heal(dicerolls.Roll(self.diceroll))
+        else:
+            amount_recovered = consumer.fighter.heal(self.amount)
 
         if amount_recovered > 0:
             self.engine.message_log.add_message(

@@ -316,7 +316,7 @@ class InventoryEventHandler(AskUserEventHandler):
     What happens then depends on the subclass.
     """
 
-    TITLE = "<missing title>"
+    TITLE = "   <missing title>   "
 
     def on_render(self, console: tcod.Console) -> None:
         """Render an inventory menu, which displays the items in the inventory, and the letter to select them.
@@ -356,7 +356,10 @@ class InventoryEventHandler(AskUserEventHandler):
                 item_key = chr(ord("a") + i)
                 is_equipped = self.engine.player.equipment.item_is_equipped(item)
 
-                item_string = f"({item_key}) {item.name}"
+                if (item.longname != ""):
+                    item_string = f"({item_key}) {item.longname}"
+                else:
+                    item_string = f"({item_key}) {item.name}"
 
                 if is_equipped:
                     item_string = f"{item_string} (E)"
@@ -386,7 +389,7 @@ class InventoryEventHandler(AskUserEventHandler):
 class InventoryActivateHandler(InventoryEventHandler):
     """Handle using an inventory item."""
 
-    TITLE = "Select an item to use"
+    TITLE = "   - Select an item to use -   "
 
     def on_item_selected(self, item: Item) -> Optional[ActionOrHandler]:
         if item.consumable:
@@ -401,7 +404,7 @@ class InventoryActivateHandler(InventoryEventHandler):
 class InventoryDropHandler(InventoryEventHandler):
     """Handle dropping an inventory item."""
 
-    TITLE = "Select an item to drop"
+    TITLE = "   - Select an item to drop -   "
 
     def on_item_selected(self, item: Item) -> Optional[ActionOrHandler]:
         """Drop this item."""

@@ -19,8 +19,8 @@ max_items_by_floor = globalvars.GAME_MAX_ITEMS_BY_FLOOR
 max_monsters_by_floor = globalvars.GAME_MAX_MONSTERS_BY_FLOOR
 
 item_chances: Dict[int, List[Tuple[Entity, int]]] = {
-    0: [(entity_factories.health_potion, 35)],
-    2: [(entity_factories.confusion_scroll, 10),(entity_factories.greater_health_potion,10)],
+    0: [(entity_factories.item_potion_health_lesser, 35)],
+    2: [(entity_factories.confusion_scroll, 10),(entity_factories.item_potion_health_greater,10)],
     4: [(entity_factories.lightning_scroll, 25), (entity_factories.sword, 5)],
     6: [(entity_factories.fireball_scroll, 25), (entity_factories.chain_mail, 15)],
 }

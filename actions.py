@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import Optional, Tuple, TYPE_CHECKING
 
+import dicerolls
 import color
 import exceptions
 
@@ -142,10 +143,20 @@ class ActionWithDirection(Action):
 class MeleeAction(ActionWithDirection):
     def perform(self) -> None:
         target = self.target_actor
+        dodged = 0
         if not target:
             raise exceptions.Impossible("Nothing to attack.")
 
-        damage = self.entity.fighter.power - target.fighter.defense
+        if (target.fighter.def_diceroll != ""):
+            if (self.entity.fighter.atk_diceroll != ""):
+                damage = dicerolls.Roll(self.entity.fighter.atk_diceroll) - dicerolls.Roll(target.fighter.def_diceroll)
+            else:
+                damage = self.entity.fighter.power - dicerolls.Roll(target.fighter.def_diceroll)
+        else:
+            if (self.entity.fighter.atk_diceroll != ""):
+                damage = dicerolls.Roll(self.entity.fighter.atk_diceroll) - target.fighter.defense
+            else:
+                damage = self.entity.fighter.power - target.fighter.defense
 
         if (self.entity.verb_attack):
             atkverb = self.entity.verb_attack
@@ -158,11 +169,26 @@ class MeleeAction(ActionWithDirection):
         else:
             attack_color = color.enemy_atk
 
+        if (target.fighter.base_dodge > 0) or (target.fighter.dodge_diceroll != ""):
+            if (target.fighter.dodge_diceroll != ""):
+                if (dicerolls.Roll(target.fighter.dodge_diceroll) > dicerolls.Roll("1d6")):
+                    damage = 0
+                    dodged = 1
+                    attack_desc = f"{attack_desc}, but is dodged."
+            elif (target.fighter.base_dodge > dicerolls.Roll("1d6")):
+                damage = 0
+                dodged = 1
+                attack_desc = f"{attack_desc}, but is dodged."
+
         if damage > 0:
             self.engine.message_log.add_message(
                 f"{attack_desc} for {damage} hp.", attack_color
             )
             target.fighter.hp -= damage
+        elif dodged > 0:
+            self.engine.message_log.add_message(
+                f"{attack_desc}", attack_color
+            )
         else:
             self.engine.message_log.add_message(
                 f"{attack_desc} but does no damage.", attack_color

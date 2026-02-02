@@ -53,7 +53,7 @@ def new_game() -> Engine:
     initialitems = {
         "dagger": entity_factories.dagger, 
         "leather_armor": entity_factories.leather_armor,
-        "health_potion": entity_factories.health_potion,
+        "health_potion": entity_factories.item_potion_health_lesser,
     }
     iitemscopy = {}
 

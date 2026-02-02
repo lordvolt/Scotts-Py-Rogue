@@ -10,9 +10,10 @@ player = Actor(
     char="☻",
     color=(255, 255, 255),
     name="Player",
+    longname="Player",
     ai_cls=HostileEnemy,
     equipment=Equipment(),
-    fighter=Fighter(hp=30, base_defense=1, base_power=2),
+    fighter=Fighter(hp=30, base_defense=1, base_power=2, dodge_diceroll="1d8+1"),
     inventory=Inventory(capacity=26),
     level=Level(level_up_base=200),
 )
@@ -23,9 +24,10 @@ monster_rat_small = Actor(
     char="r",
     color=(102, 51, 0),
     name="Small Rat",
+    longname="Small Rat",
     ai_cls=HostileEnemy,
     equipment=Equipment(),
-    fighter=Fighter(hp=1, base_defense=0, base_power=3),
+    fighter=Fighter(hp=1, base_defense=0, base_power=3, atk_diceroll="1d6"),
     inventory=Inventory(capacity=0),
     level=Level(xp_given=10),
     verb_attack="scratches",
@@ -37,7 +39,7 @@ monster_snake_small = Actor(
     name="Small Snake",
     ai_cls=HostileEnemy,
     equipment=Equipment(),
-    fighter=Fighter(hp=1, base_defense=0, base_power=3),
+    fighter=Fighter(hp=1, base_defense=0, base_power=3, atk_diceroll="1d6"),
     inventory=Inventory(capacity=0),
     level=Level(xp_given=10),
     verb_attack="bites",
@@ -49,7 +51,7 @@ monster_snake_cobra = Actor(
     name="Cobra Snake",
     ai_cls=HostileEnemy,
     equipment=Equipment(),
-    fighter=Fighter(hp=2, base_defense=0, base_power=4),
+    fighter=Fighter(hp=2, base_defense=0, base_power=4, atk_diceroll="2d4"),
     inventory=Inventory(capacity=0),
     level=Level(xp_given=20),
     verb_attack="bites",
@@ -61,7 +63,7 @@ monster_orc_lesser = Actor(
     name="Lesser Orc",
     ai_cls=HostileEnemy,
     equipment=Equipment(),
-    fighter=Fighter(hp=5, base_defense=0, base_power=3),
+    fighter=Fighter(hp=5, base_defense=0, base_power=3, atk_diceroll="1d8"),
     inventory=Inventory(capacity=0),
     level=Level(xp_given=30),
 )
@@ -72,7 +74,7 @@ monster_orc = Actor(
     name="Orc",
     ai_cls=HostileEnemy,
     equipment=Equipment(),
-    fighter=Fighter(hp=10, base_defense=0, base_power=3),
+    fighter=Fighter(hp=10, base_defense=0, base_power=3, atk_diceroll="1d10"),
     inventory=Inventory(capacity=0),
     level=Level(xp_given=40),
 )
@@ -83,49 +85,36 @@ monster_orc_greater = Actor(
     name="Greater Orc",
     ai_cls=HostileEnemy,
     equipment=Equipment(),
-    fighter=Fighter(hp=15, base_defense=0, base_power=3),
+    fighter=Fighter(hp=15, base_defense=0, base_power=3, atk_diceroll="1d12"),
     inventory=Inventory(capacity=0),
     level=Level(xp_given=50),
 )
-"""
-orc = Actor(
-    char="o",
-    color=(63, 127, 63),
-    name="Orc",
-    ai_cls=HostileEnemy,
-    equipment=Equipment(),
-    fighter=Fighter(hp=10, base_defense=0, base_power=3),
-    inventory=Inventory(capacity=0),
-    level=Level(xp_given=35),
-    earliest_floor=0,
-    spawn_chance=80,
-)
-"""
+
 troll = Actor(
     char="T",
     color=(0, 127, 0),
     name="Troll",
     ai_cls=HostileEnemy,
     equipment=Equipment(),
-    fighter=Fighter(hp=16, base_defense=1, base_power=4),
+    fighter=Fighter(hp=16, base_defense=1, base_power=4, atk_diceroll="2d8"),
     inventory=Inventory(capacity=0),
     level=Level(xp_given=100),
-    earliest_floor=3,
-    spawn_chance=15,
 )
 
-health_potion = Item(
-    char="!",
-    color=(127, 0, 255), 
-    name="Health Potion",
-    consumable=consumable.HealingConsumable(amount=4),
-)
-
-greater_health_potion = Item(
+item_potion_health_lesser = Item(
     char="♥",
-    color=(127, 0, 255), 
+    color=(102, 0, 0), 
+    name="Lesser Health Potion",
+    longname="Health Potion (1d6+4)",
+    consumable=consumable.HealingConsumable(diceroll="1d6+4"),
+)
+
+item_potion_health_greater = Item(
+    char="♥",
+    color=(204, 0, 0), 
     name="Greater Health Potion",
-    consumable=consumable.HealingConsumable(amount=20),    
+    longname="Greater Health Potion (1d10+6)",
+    consumable=consumable.HealingConsumable(diceroll="1d10+6"),    
 )
 
 lightning_scroll = Item(

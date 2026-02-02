@@ -34,6 +34,7 @@ class Entity:
         char: str = "?",
         color: Tuple[int, int, int] = (255, 255, 255),
         name: str = "<Unnamed>",
+        longname: str = "",
         blocks_movement: bool = False,
         render_order: RenderOrder = RenderOrder.CORPSE,
         earliest_floor: int = 0,
@@ -45,6 +46,10 @@ class Entity:
         self.char = char
         self.color = color
         self.name = name
+        if (longname != ""):
+            self.longname = longname
+        else:
+            self.longname = name
         self.blocks_movement = blocks_movement
         self.render_order = render_order
         self.earliest_floor = earliest_floor
@@ -101,6 +106,7 @@ class Actor(Entity):
         char: str = "?",
         color: Tuple[int, int, int] = (255, 255, 255),
         name: str = "<Unnamed>",
+        longname: str = "",
         ai_cls: Type[BaseAI],
         equipment: Equipment,
         fighter: Fighter,
@@ -116,6 +122,7 @@ class Actor(Entity):
             char=char,
             color=color,
             name=name,
+            longname=longname,
             blocks_movement=True,
             render_order=RenderOrder.ACTOR,
             earliest_floor = earliest_floor,
@@ -151,6 +158,7 @@ class Item(Entity):
         char: str = "?",
         color: Tuple[int, int, int] = (255, 255, 255),
         name: str = "<Unnamed>",
+        longname: str = "",
         consumable: Optional[Consumable] = None,
         equippable: Optional[Equippable] = None,
         earliest_floor: int = 0,
@@ -162,6 +170,7 @@ class Item(Entity):
             char=char,
             color=color,
             name=name,
+            longname=longname,
             blocks_movement=False,
             render_order=RenderOrder.ITEM,
             earliest_floor = earliest_floor,
