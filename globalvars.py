@@ -1,6 +1,6 @@
 GAME_TITLE = "Scooter's PyRogue"
-GAME_VERSION = "v0.0016"
-GAME_TAGLINE = "Rats, Snakes, and Orcs OH MY!"
+GAME_VERSION = "v0.0017"
+GAME_TAGLINE = "Now on GitHub!"
 GAME_TITLEBAR = GAME_TITLE + " " + GAME_VERSION + " " + GAME_TAGLINE
 
 GAME_COPYRIGHT = "By Scott Winkle (c) 2026"

@@ -21,6 +21,8 @@ if TYPE_CHECKING:
     from entity import Item
 
 
+#from setup_game import new_game
+
 MOVE_KEYS = {
     # Arrow keys.
     tcod.event.KeySym.UP: (0, -1),
@@ -558,23 +560,85 @@ class MainGameEventHandler(EventHandler):
         return action
 
 class GameOverEventHandler(EventHandler):
-    def on_quit(self) -> None:
-        """Handle exiting out of a finished game."""
-        if os.path.exists("savegame.sav"):
-            os.remove("savegame.sav")  # Deletes the active save file.
-        raise exceptions.QuitWithoutSaving()  # Avoid saving a finished game.
+    """Handle the game over screen with tombstone and restart/quit options."""
 
-    def ev_quit(self, event: tcod.event.Quit) -> None:
-        self.on_quit()
+    def on_render(self, console: tcod.Console) -> None:
+        # Render the final game state (map, last messages, HP=0, etc.)
+        self.engine.render(console)
 
-    def ev_keydown(self, event: tcod.event.KeyDown) -> None:
+        # Dim the background slightly for drama
+        console.tiles_rgb["fg"] //= 3
+        console.tiles_rgb["bg"] //= 3
+
+        center_x = console.width // 2
+        center_y = console.height // 2
+
+        # Big death message
+        console.print(
+            center_x, center_y - 10,
+            "YOU DIED!",
+            fg=color.player_die if hasattr(color, 'player_die') else color.red,
+            bg=color.black,
+            alignment=tcod.CENTER,
+        )
+
+        # ASCII Tombstone (centered, gray stone look)
+        tomb_lines = [
+            "   ___________ ",
+            "  /           |",
+            " /    REST    |",
+            "|      IN     |",
+            "|    PEACE    |",
+            "|             |",
+            "|             |",
+            "|_____________|",
+            "\\|/       \\|/",
+        ]
+        for i, line in enumerate(tomb_lines):
+            console.print(
+                center_x, center_y - 8 + i,
+                line,
+                fg=(128, 128, 128),  # Gray stone
+                bg=color.black,
+                alignment=tcod.CENTER,
+            )
+
+        # Show last 3 log messages...
+        last_messages = self.engine.message_log.messages[-2:]  # last 2 lines
+        for i, msg in enumerate(last_messages):
+            console.print(
+                center_x, center_y + 6 + i,
+                msg.plain_text,
+                fg=msg.fg or color.white,
+                bg=color.black,
+                alignment=tcod.CENTER,
+            )
+
+        # Options (press keys)
+        console.print(
+            center_x, center_y + 4,
+            "[R]ESTART  |  [Q] / ESC = QUIT",
+            fg=color.white,
+            bg=color.black,
+            alignment=tcod.CENTER,
+        )
+
+    def ev_keydown(self, event: tcod.event.KeyDown) -> Optional[BaseEventHandler]:
+        from setup_game import new_game
+
         key = event.sym
 
-        if key in QUIT_KEYS:
-            self.on_quit()
-        
-        ### TODO: ADD ABILITY TO START NEW GAME
-            
+        if key == tcod.event.KeySym.r or key == tcod.event.KeySym.R:
+            # Restart: Create fresh new game engine and switch handler
+            new_engine = new_game()
+            return MainGameEventHandler(new_engine)
+
+        if key in {tcod.event.KeySym.q, tcod.event.KeySym.ESCAPE}:
+            # Quit without saving (dead game anyway)
+            raise exceptions.QuitWithoutSaving()
+
+        # Any other key: stay on death screen
+        return None
 
 
 
