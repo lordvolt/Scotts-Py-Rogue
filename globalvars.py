@@ -1,0 +1,39 @@
+GAME_TITLE = "Scooter's PyRogue"
+GAME_VERSION = "v0.0016"
+GAME_TAGLINE = "Rats, Snakes, and Orcs OH MY!"
+GAME_TITLEBAR = GAME_TITLE + " " + GAME_VERSION + " " + GAME_TAGLINE
+
+GAME_COPYRIGHT = "By Scott Winkle (c) 2026"
+
+
+GAME_LOG_WELCOMETEXT = "Hello and welcome, adventurer, to yet another dungeon!"
+
+GAME_TILESHEETSDIR = "tilesheets/"
+#GAME_TILESHEET = "Md_curses_16x16.png"
+GAME_TILESHEET = "VGA8x16.png"
+#GAME_TILESHEET = "Alloy_curses_12x12.png"
+GAME_MAINMENU_BG = "menu_background3.png"
+
+GAME_SCREENWIDTH = 100
+GAME_SCREENHEIGHT = 40
+
+GAME_UI_INFOWIDTH = 20
+GAME_UI_HELPWIDTH = 28
+
+GAME_MAPWIDTH = 100
+GAME_MAPHEIGHT = 30
+
+GAME_ROOM_MAXSIZE = 10
+GAME_ROOM_MINSIZE = 6
+GAME_ROOM_MAXROOMS = 30
+
+GAME_MAX_ITEMS_BY_FLOOR = [
+    (1, 1),
+    (4, 2),
+]
+
+GAME_MAX_MONSTERS_BY_FLOOR = [
+    (1, 2),
+    (4, 3),
+    (6, 5),
+]
