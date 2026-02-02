@@ -138,19 +138,19 @@ item_scroll_lighting_v2 = Item(
 item_scroll_magicmissle = Item(
     char="≈",
     color=(255, 102, 204),
-    name="Magic Missle",
+    name="Magic Missle Scroll",
     longname="Magic Missle (Tgt)",
     consumable=consumable.TargetedProjectileDamageConsumable(dmg_diceroll="2d6", maximum_range=5, projectiletext="Magic Missle"),
 )
 
-confusion_scroll = Item(
+item_scroll_confusion = Item(
     char="≈",
     color=(207, 63, 255),
     name="Confusion Scroll",
     consumable=consumable.ConfusionConsumable(number_of_turns=10),
 )
 
-fireball_scroll = Item(
+item_scroll_fireball = Item(
     char="≈",
     color=(255, 0, 0),
     name="Fireball Scroll",

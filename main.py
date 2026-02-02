@@ -27,7 +27,7 @@ warnings.filterwarnings("ignore")
 pygame.mixer.pre_init(frequency=44100, size=-16, channels=2, buffer=2048)
 pygame.mixer.init()
 
-music_file = "dungeon.mod"
+music_file = "dungeon_walk.mod"
 
 pygame.mixer.music.load(music_file)
 pygame.mixer.music.play(-1)  # -1 = loop forever
