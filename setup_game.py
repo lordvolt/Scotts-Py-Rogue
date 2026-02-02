@@ -21,7 +21,6 @@ import globalvars
 # Load the background image and remove the alpha channel.
 background_image = tcod.image.load(globalvars.GAME_MAINMENU_BG)[:, :, :3]
 
-
 def new_game() -> Engine:
     """Return a brand new game session as an Engine instance."""
     map_width = globalvars.GAME_MAPWIDTH

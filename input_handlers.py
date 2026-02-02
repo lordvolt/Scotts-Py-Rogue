@@ -588,7 +588,7 @@ class GameOverEventHandler(EventHandler):
             "  /           |",
             " /    REST    |",
             "|      IN     |",
-            "|    PEACE    |",
+            "|    PIECES   |",
             "|             |",
             "|             |",
             "|_____________|",
