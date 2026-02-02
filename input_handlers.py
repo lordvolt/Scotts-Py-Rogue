@@ -15,6 +15,7 @@ from actions import (
 )
 import color
 import exceptions
+import pygame
 
 if TYPE_CHECKING:
     from engine import Engine
@@ -553,6 +554,11 @@ class MainGameEventHandler(EventHandler):
             return CharacterScreenEventHandler(self.engine)
         elif key == tcod.event.KeySym.SLASH:
             return LookHandler(self.engine)
+        elif key == tcod.event.KeySym.m:
+            if (pygame.mixer.music.get_busy()):
+                pygame.mixer.music.pause()
+            else:
+                pygame.mixer.music.unpause()
         elif key == tcod.event.KeySym.SPACE:
             if (player.x, player.y) == self.engine.game_map.downstairs_location:
                 return actions.TakeStairsAction(player)

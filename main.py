@@ -9,6 +9,7 @@ import input_handlers
 import setup_game
 
 import globalvars
+import pygame
 
 ##########################
 #
@@ -22,6 +23,28 @@ import globalvars
 # Moved to globalvars.py
 
 warnings.filterwarnings("ignore")
+
+pygame.mixer.pre_init(frequency=44100, size=-16, channels=2, buffer=2048)
+pygame.mixer.init()
+
+music_file = "dungeon.mod"
+
+pygame.mixer.music.load(music_file)
+pygame.mixer.music.play(-1)  # -1 = loop forever
+
+# Optional: lower volume if it's screaming
+# pygame.mixer.music.set_volume(0.7)
+
+
+"""
+if (pygame.mixer.music.get_busy()):
+    pygame.mixer.music.pause()
+else:
+    pygame.mixer.music.unpause()
+
+
+"""
+
 
 def save_game(handler: input_handlers.BaseEventHandler, filename: str) -> None:
     """If the current event handler has an active Engine then save it."""

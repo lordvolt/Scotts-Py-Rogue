@@ -99,6 +99,8 @@ def render_help_box(
     console.print(x=x+2, y=y+2, string="SPC to Interact/Grab/↕")
     console.print(x=x+2, y=y+3, string="C Char - I Inv - D Drop")
     console.print(x=x+2, y=y+4, string="V Log - Q Save & Quit")
+    console.print(x=x+2, y=y+5, string="M Pause/Restart ♫")
+    
     
     
 def render_separator(
